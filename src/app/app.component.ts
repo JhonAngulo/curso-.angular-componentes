@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Product } from './models/product.model'
+
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'my-store';
+  userParent = 'https://www.w3schools.com/howto/img_avatar.png';
+
+  onLoaded(img: string) {
+    console.log('log padre', img)
+  }
 }
