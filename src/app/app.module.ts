@@ -2,6 +2,7 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { SwiperModule } from 'swiper/angular'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +16,7 @@ import { registerLocaleData } from '@angular/common';
 import { ReversePipe } from './pipes/reverse.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { HighligthDirective } from './directives/highligth.directive';
+
 registerLocaleData(localesEs, 'es');
 
 @NgModule({
@@ -32,7 +34,8 @@ registerLocaleData(localesEs, 'es');
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    SwiperModule
   ],
   providers: [{
     provide: LOCALE_ID, useValue: 'es'
