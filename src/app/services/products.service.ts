@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Product, CreateProductDTO, UpdateProductDTO } from '../models/product.model';
-import { retry } from 'rxjs';
+import { retry, catchError, map } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
 
-  private endPointUrl = '/api/products'
+  private endPointUrl = `${environment.API_URL}/api/products`
 
   constructor(
     private http: HttpClient
@@ -30,12 +32,29 @@ export class ProductsService {
       params: { limit, offset }
     })
     .pipe(
-      retry(3)
+      retry(3),
+      map(products => products.map(item => {
+        return {
+          ...item,
+          taxes: .19 * item.price
+        }
+      }))
     )
   }
 
   getProduct(id: string) {
     return this.http.get<Product>(`${this.endPointUrl}/${id}`)
+    .pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 500) {
+          return throwError(() => new Error('Algo esta mal en el servidor')) 
+        }
+        if (error.status === 404) {
+          return throwError(() => new Error('El producto no existe')) 
+        }
+        return throwError(() => new Error('Ups algo salio mal'))  
+      })
+    )
   }
 
   create(dto: CreateProductDTO) {

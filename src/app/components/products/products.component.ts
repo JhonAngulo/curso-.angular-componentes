@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Product, CreateProductDTO, UpdateProductDTO } from '../../models/product.model'
-import { StoreService } from '../../services/store.service'
-import { ProductsService } from '../../services/products.service'
+import { Product, CreateProductDTO, UpdateProductDTO } from '../../models/product.model';
+import { StoreService } from '../../services/store.service';
+import { ProductsService } from '../../services/products.service';
+import { switchMap } from 'rxjs/operators';
+import { zip } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -25,9 +27,11 @@ export class ProductsComponent implements OnInit {
       name: ''
     },
     description: ''
-  }
-  limit = 10
-  offset = 0
+  };
+  limit = 10;
+  offset = 0;
+  statusDetail: 'loading' | 'success' | 'error' | 'init' = 'init';
+  errorMessage: string = '';
 
   today = new Date();
   date = new Date(2021,1,21)
@@ -54,15 +58,41 @@ export class ProductsComponent implements OnInit {
   }
 
   onShowDetail(id: string) {
+    this.statusDetail = 'loading';
+    this.toggleProductDetail();
     this.productsService.getProduct(id)
-    .subscribe(data => {
-      this.toggleProductDetail();
+    .subscribe({
+    next: (data) => {
       this.productChosen = data;
-    })
+      this.statusDetail = 'success';
+    },
+    error: (response) => {
+      this.statusDetail = 'error';
+      this.errorMessage = response.message
+    } 
+  })
   }
 
   toggleProductDetail() {
     this.showProductDetail = !this.showProductDetail
+  }
+
+  readAndUpdate(id: string) {
+    this.productsService.getProduct(id)
+    .pipe(
+      switchMap((product) => this.productsService.update(product.id, { title: 'change' }))
+    )
+    .subscribe(data => {
+      console.log(data)
+    })
+
+    zip(
+      this.productsService.getProduct(id),
+      this.productsService.update(id, { title: 'change' })
+    ).subscribe(response => {
+      const read = response[0];
+      const update = response[1];
+    })
   }
 
   createNewProduct() {
@@ -110,3 +140,7 @@ export class ProductsComponent implements OnInit {
     })
   }
 }
+function subscribe(arg0: (response: any) => void) {
+  throw new Error('Function not implemented.');
+}
+

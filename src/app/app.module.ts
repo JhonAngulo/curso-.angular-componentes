@@ -1,7 +1,7 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SwiperModule } from 'swiper/angular'
 
 import { AppRoutingModule } from './app-routing.module';
@@ -16,6 +16,8 @@ import { registerLocaleData } from '@angular/common';
 import { ReversePipe } from './pipes/reverse.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { HighligthDirective } from './directives/highligth.directive';
+
+import { TimeInterceptor } from './interceptor/time.interceptor'
 
 registerLocaleData(localesEs, 'es');
 
@@ -39,6 +41,8 @@ registerLocaleData(localesEs, 'es');
   ],
   providers: [{
     provide: LOCALE_ID, useValue: 'es'
+  },{
+    provide: HTTP_INTERCEPTORS, useClass: TimeInterceptor, multi: true
   }],
   bootstrap: [AppComponent]
 })

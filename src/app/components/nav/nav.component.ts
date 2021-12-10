@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { StoreService } from '../../services/store.service'
+import { Component, OnInit, Input } from '@angular/core';
+import { StoreService } from '../../services/store.service';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-nav',
@@ -7,6 +8,13 @@ import { StoreService } from '../../services/store.service'
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
+
+  @Input() authUser: User = {
+    id: '',
+    email: '',
+    name: '',
+    password: ''
+  }
 
   activeMenu = false;
   counter = 0;

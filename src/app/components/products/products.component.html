@@ -18,6 +18,8 @@
   <button (click)="loadMore()">Cargar mas</button>
 </div>
 <div class="product--detail" [class.active]="showProductDetail">
+  {{ statusDetail }}
+  <h1 *ngIf="errorMessage.length">{{errorMessage}}</h1>
   <div *ngIf="productChosen" >
     <button (click)="toggleProductDetail()">Close</button>
     <h1>{{ productChosen.title }}</h1>

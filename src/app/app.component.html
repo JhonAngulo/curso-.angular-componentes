@@ -1,4 +1,7 @@
-<app-nav></app-nav>
+<app-nav [authUser]="authUser"></app-nav>
+<button (click)="createUser()" >Crear usuario</button>
+<button (click)="login()">Ingresar</button>
+<button (click)="getProfile()">Ver perfil</button>
 <app-products></app-products>
 
 
