@@ -11,7 +11,7 @@ import { checkTime } from '../interceptor/time.interceptor';
 })
 export class ProductsService {
 
-  private endPointUrl = `${environment.API_URL}/api/products`
+  private endPointUrl = `${environment.API_URL}/api/products`;
 
   constructor(
     private http: HttpClient

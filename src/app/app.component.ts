@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { UsersService } from './services/users.service';
-import { User } from './models/user.model'
+import { FilesService } from './services/files.service';
+import { User } from './models/user.model';
 
 
 @Component({
@@ -17,11 +18,13 @@ export class AppComponent {
     email: '',
     name: '',
     password: ''
-  }
+  };
+  imgRta = '';
 
   constructor (
     private authService: AuthService,
     private usersService: UsersService,
+    private filesService: FilesService,
   ) {
 
   }
@@ -58,5 +61,25 @@ export class AppComponent {
       console.log(data)
       this.authUser = data
     })
+  }
+
+  downloadPdf() {
+    this.filesService.getFile(
+      'dummy.pdf',
+      'https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf',
+      'application/pdf'
+    ).subscribe()
+  }
+
+  onUpload(event: Event) {
+    const element = event.target as HTMLInputElement;
+    const file = element.files?.item(0);
+    if (file) {
+      this.filesService.uploadFile(file)
+      .subscribe(rta => {
+        this.imgRta = rta.location;
+      })
+    }
+    
   }
 }
