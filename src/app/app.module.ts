@@ -18,6 +18,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { HighligthDirective } from './directives/highligth.directive';
 
 import { TimeInterceptor } from './interceptor/time.interceptor'
+import { TokenInterceptor } from './interceptor/token.interceptor'
 
 registerLocaleData(localesEs, 'es');
 
@@ -41,9 +42,14 @@ registerLocaleData(localesEs, 'es');
   ],
   providers: [{
     provide: LOCALE_ID, useValue: 'es'
-  },{
+  },
+  {
     provide: HTTP_INTERCEPTORS, useClass: TimeInterceptor, multi: true
-  }],
+  },
+  {
+    provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true
+  }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
