@@ -18,7 +18,14 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { HighligthDirective } from './directives/highligth.directive';
 
 import { TimeInterceptor } from './interceptor/time.interceptor'
-import { TokenInterceptor } from './interceptor/token.interceptor'
+import { TokenInterceptor } from './interceptor/token.interceptor';
+import { HomeComponent } from './pages/home/home.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { CategoryComponent } from './pages/category/category.component';
+import { MycartComponent } from './pages/mycart/mycart.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { RecoveryComponent } from './pages/recovery/recovery.component'
 
 registerLocaleData(localesEs, 'es');
 
@@ -31,7 +38,14 @@ registerLocaleData(localesEs, 'es');
     NavComponent,
     ReversePipe,
     TimeAgoPipe,
-    HighligthDirective
+    HighligthDirective,
+    HomeComponent,
+    NotFoundComponent,
+    CategoryComponent,
+    MycartComponent,
+    LoginComponent,
+    RegisterComponent,
+    RecoveryComponent
   ],
   imports: [
     BrowserModule,
