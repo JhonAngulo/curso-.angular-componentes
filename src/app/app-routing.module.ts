@@ -7,7 +7,8 @@ import { CategoryComponent } from './pages/category/category.component';
 import { MycartComponent } from './pages/mycart/mycart.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { RecoveryComponent } from './pages/recovery/recovery.component'
+import { RecoveryComponent } from './pages/recovery/recovery.component';
+import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
 
 const routes: Routes = [
   // {
@@ -28,6 +29,10 @@ const routes: Routes = [
     component: CategoryComponent
   },
   {
+    path: 'product/:id',
+    component: ProductDetailComponent
+  },
+  {
     path: 'cart',
     component: MycartComponent
   },
@@ -44,7 +49,7 @@ const routes: Routes = [
     component: RecoveryComponent
   },
   {
-    path: 'notfound',
+    path: '**',
     component: NotFoundComponent
   }
 ];
