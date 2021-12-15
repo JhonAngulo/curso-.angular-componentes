@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Product, CreateProductDTO, UpdateProductDTO } from '../../models/product.model';
 import { StoreService } from '../../services/store.service';
 import { ProductsService } from '../../services/products.service';
@@ -10,12 +10,12 @@ import { zip } from 'rxjs';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss']
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent {
 
-
+  @Input() products: Product[] = []
+  @Output() loadMoreProducts = new EventEmitter()
   myShoppingCart: Product[] = []
   total: number = 0
-  products: Product[] = []
   showProductDetail= false
   productChosen: Product = {
     id: '',
@@ -28,8 +28,6 @@ export class ProductsComponent implements OnInit {
     },
     description: ''
   };
-  limit = 10;
-  offset = 0;
   statusDetail: 'loading' | 'success' | 'error' | 'init' = 'init';
   errorMessage: string = '';
 
@@ -43,14 +41,14 @@ export class ProductsComponent implements OnInit {
     this.myShoppingCart = this.storeService.getShoppingCart()
   }
 
-  ngOnInit(): void {
-    this.loadMore()
+  // ngOnInit(): void {
+    // this.loadMore()
     // this.productsService.getProductsByPage(this.limit, this.offset)
     // .subscribe(data => {
     //   this.products = data;
     //   this.offset += this.limit;
     // })
-  }
+  // }
 
   onAddToShoppingCart(product: Product) {
     this.storeService.addProduct(product)
@@ -133,13 +131,12 @@ export class ProductsComponent implements OnInit {
   }
 
   loadMore() {
-    this.productsService.getProductsByPage(this.limit, this.offset)
-    .subscribe(data => {
-      this.products = this.products.concat(data);
-      this.offset += this.limit;
-    })
+    this.loadMoreProducts.emit()
   }
+
 }
+
+
 function subscribe(arg0: (response: any) => void) {
   throw new Error('Function not implemented.');
 }

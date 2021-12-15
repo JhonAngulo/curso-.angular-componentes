@@ -12,6 +12,7 @@ import { checkTime } from '../interceptor/time.interceptor';
 export class ProductsService {
 
   private endPointUrl = `${environment.API_URL}/api/products`;
+  private endPointUrlCategory = `${environment.API_URL}/api/categories`;
 
   constructor(
     private http: HttpClient
@@ -32,6 +33,26 @@ export class ProductsService {
     return this.http.get<Product[]>(this.endPointUrl, {
       params: { limit, offset },
       context: checkTime()
+    })
+    .pipe(
+      retry(3),
+      map(products => products.map(item => {
+        return {
+          ...item,
+          taxes: .19 * item.price
+        }
+      }))
+    )
+  }
+
+  getByCategory(caterogyId: string, limit?: number, offset?: number) {
+    let params = new HttpParams();
+    if (limit && offset) {
+      params = params.set('limit', limit)
+      params = params.set('offset', offset)
+    }
+    return this.http.get<Product[]>(`${this.endPointUrlCategory}/${caterogyId}/products`, {
+      params
     })
     .pipe(
       retry(3),
