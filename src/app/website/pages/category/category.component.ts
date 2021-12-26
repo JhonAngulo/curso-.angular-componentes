@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProductsService } from '../../services/products.service';
-import { Product } from '../../models/product.model';
+import { ProductsService } from '../../../services/products.service';
+import { Product } from '../../../models/product.model';
 
 @Component({
   selector: 'app-category',
@@ -14,6 +14,7 @@ export class CategoryComponent implements OnInit {
   products: Product[] = [];
   limit = 10;
   offset = 0;
+  productId: string |null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,6 +30,9 @@ export class CategoryComponent implements OnInit {
       }
       this.categoryId = params.get('id');
       this.onLoadMore()
+    })
+    this.route.queryParamMap.subscribe(params => {
+      this.productId = params.get('product')
     })
   }
 
