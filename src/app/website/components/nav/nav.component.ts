@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { StoreService } from '../../../services/store.service';
 import { User } from '../../../models/user.model';
 import { CategoriesService } from 'src/app/services/categories.service';
+import { AuthService } from '../../../services/auth.service';
 import { Category } from 'src/app/models/category.model';
 
 @Component({
@@ -11,13 +13,8 @@ import { Category } from 'src/app/models/category.model';
 })
 export class NavComponent implements OnInit {
 
-  @Input() authUser: User = {
-    id: '',
-    email: '',
-    name: '',
-    password: ''
-  }
-
+  authUser: User | null = null;
+  token: string = '';
   activeMenu = false;
   counter = 0;
   limit = 10;
@@ -26,7 +23,9 @@ export class NavComponent implements OnInit {
 
   constructor(
     private storeService: StoreService,
-    private categoriesService: CategoriesService
+    private categoriesService: CategoriesService,
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -38,6 +37,32 @@ export class NavComponent implements OnInit {
 
   toggleMenu() {
     this.activeMenu = !this.activeMenu
+  }
+
+  onLogin() {
+    this.authService.login({
+      email: 'jhon.a@correo.com',
+      password: 'a123456789'
+    })
+    .subscribe(rta => {
+      console.log(rta.access_token);
+      this.token = rta.access_token;
+      this.getProfile()
+    })
+  }
+
+  onLogout() {
+    this.authService.logout();
+    this.authUser = null;
+    this.router.navigate(['/home']);
+  }
+
+  getProfile() {
+    this.authService.profile()
+    .subscribe(data => {
+      console.log(data)
+      this.authUser = data
+    })
   }
 
   getAllCategories() {

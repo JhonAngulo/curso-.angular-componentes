@@ -8,7 +8,9 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { RecoveryComponent } from './pages/recovery/recovery.component';
 import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
+import { AuthGuard } from './../guards/auth.guard'
 
 const routes: Routes = [
   {
@@ -47,6 +49,11 @@ const routes: Routes = [
       {
         path: 'reset',
         component: RecoveryComponent
+      },
+      {
+        path: 'profile',
+        canActivate: [ AuthGuard ],
+        component: ProfileComponent
       }
     ]
   },
