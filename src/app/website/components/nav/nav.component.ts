@@ -54,7 +54,7 @@ export class NavComponent implements OnInit {
   }
 
   onLogin() {
-    this.authService.login(this.userBasic)
+    this.authService.login(this.userAdmin)
     .subscribe(() => {
       this.getProfile()
       this.router.navigate(['/profile'])
