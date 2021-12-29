@@ -33,21 +33,31 @@ export class NavComponent implements OnInit {
       this.counter = products.length
     })
     this.getAllCategories()
+    this.authService.user$
+    .subscribe(data => {
+      this.authUser = data
+    })
   }
 
   toggleMenu() {
     this.activeMenu = !this.activeMenu
   }
 
+  userAdmin = {
+    email: 'admin@mail.com',
+    password: 'admin123'
+  }
+
+  userBasic = {
+    email: 'john@mail.com',
+    password: 'changeme'
+  }
+
   onLogin() {
-    this.authService.login({
-      email: 'jhon.a@correo.com',
-      password: 'a123456789'
-    })
-    .subscribe(rta => {
-      console.log(rta.access_token);
-      this.token = rta.access_token;
+    this.authService.login(this.userBasic)
+    .subscribe(() => {
       this.getProfile()
+      this.router.navigate(['/profile'])
     })
   }
 
@@ -60,7 +70,6 @@ export class NavComponent implements OnInit {
   getProfile() {
     this.authService.profile()
     .subscribe(data => {
-      console.log(data)
       this.authUser = data
     })
   }

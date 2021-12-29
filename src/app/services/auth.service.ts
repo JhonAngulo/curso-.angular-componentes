@@ -5,13 +5,17 @@ import { User, LoginUserDTO } from '../models/user.model';
 import { Auth } from '../models/auth.model';
 import { tap } from 'rxjs/operators';
 import { TokenService } from './token.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private endPointUrl = `${environment.API_URL}/api/auth`
+  private endPointUrl = `${environment.API_URL}/api/auth`;
+  private user = new BehaviorSubject<User | null>(null);
+
+  user$ = this.user.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -38,5 +42,8 @@ export class AuthService {
       //   // 'Content-type': 'application/json'
       // }
     })
+    .pipe(
+      tap(user => this.user.next(user))
+    )
   }
 }
